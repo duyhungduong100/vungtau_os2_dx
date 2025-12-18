@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chào năm mới OS2-DX Vũng tàu 2026 (Tiết Kiệm)</title>
+    <title>Chào năm mới OS2-DX Vũng Tàu 2026</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -176,10 +176,10 @@
     Accent: #EF4444 (Coral Red)
     
     UPDATES:
-    - Reduced budget per person to 600~700k.
-    - Updated charts: Food reduced to 1.8M total, Backup reduced to 300k total.
-    - Added "Free Time" slots in itinerary.
-    - Updated AI prompt with new budget context.
+    - Updated budget to 500k/person (total 2.000.000 VNĐ for 4 people).
+    - Removed contingency/backup line item.
+    - Refreshed itinerary spots to be more fun/unique in Vũng Tàu.
+    - Updated AI prompt to match the new vibe & budget.
     
     NO SVG USED. NO MERMAID USED.
     -->
@@ -218,7 +218,7 @@
                 </div>
                 <div class="bg-white/20 backdrop-blur rounded-lg p-3 border-2 border-yellow-400 text-yellow-300">
                     <div class="text-2xl">💰</div>
-                    <div class="font-bold">6~700k/Người</div>
+                    <div class="font-bold">500k/Người</div>
                 </div>
                 <div class="bg-white/20 backdrop-blur rounded-lg p-3">
                     <div class="text-2xl">🌊</div>
@@ -241,21 +241,21 @@
                     <div class="glass-card shadow-lg rounded-xl p-6 border-t-4 border-teal-500">
                         <div class="text-4xl mb-4 text-center">🏍️</div>
                         <h3 class="text-xl font-bold text-center mb-3 text-teal-700">Kiểm Tra Xe</h3>
-                        <p class="text-sm text-gray-600 text-center">Để tiết kiệm chi phí sửa xe dọc đường, hãy bảo dưỡng kỹ trước khi đi.</p>
+                        <p class="text-sm text-gray-600 text-center">Bảo dưỡng nhẹ + bơm lốp cho yên tâm. Tụi mình đi đường xa nên an toàn là số 1.</p>
                     </div>
 
                     <!-- Card 2 -->
                     <div class="glass-card shadow-lg rounded-xl p-6 border-t-4 border-yellow-500">
                         <div class="text-4xl mb-4 text-center">🏨</div>
-                        <h3 class="text-xl font-bold text-center mb-3 text-yellow-600">Homestay Giá Rẻ</h3>
-                        <p class="text-sm text-gray-600 text-center">Mục tiêu: Tìm phòng ~500k-600k/đêm cho 4 người. Xa Bãi Sau một chút cũng được.</p>
+                        <h3 class="text-xl font-bold text-center mb-3 text-yellow-600">Chốt Phòng</h3>
+                        <p class="text-sm text-gray-600 text-center">Mục tiêu: phòng 4 người khoảng <strong>450k-500k/đêm</strong>. Ưu tiên sạch sẽ, gửi xe ok, ra biển chạy 5-10 phút là ổn.</p>
                     </div>
 
                     <!-- Card 3 -->
                     <div class="glass-card shadow-lg rounded-xl p-6 border-t-4 border-red-500">
                         <div class="text-4xl mb-4 text-center">🎒</div>
                         <h3 class="text-xl font-bold text-center mb-3 text-red-600">Đồ Cá Nhân</h3>
-                        <p class="text-sm text-gray-600 text-center">Mang theo nước suối và đồ ăn vặt từ nhà để tiết kiệm tiền mua dọc đường.</p>
+                        <p class="text-sm text-gray-600 text-center">Mang nước suối + áo khoác mỏng. Có snack thì càng vui, khỏi bị tụt mood giữa đường.</p>
                     </div>
                 </div>
             </div>
@@ -264,17 +264,16 @@
         <!-- SECTION 2: BUDGET ANALYSIS -->
         <section id="budget" class="bg-white rounded-2xl shadow-xl p-8">
             <h2 class="text-3xl font-bold text-teal-800 mb-6 flex items-center gap-3 border-b-4 border-yellow-400 pb-2 inline-block">
-                <span>💸</span> Phân Tích Tài Chính (Mới)
+                <span>💸</span> Ngân Sách Chốt Kèo
             </h2>
             <p class="text-gray-600 mb-8 text-lg">
-                Đã điều chỉnh ngân sách xuống <strong>3.200.000 VNĐ (600~700K/người)</strong>. 
-                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-bold">Tiết kiệm được 600~700K cho cả nhóm!</span>
+                Ngân sách chốt: <strong>2.000.000 VNĐ (500K/người)</strong>. Tụi mình chia hạng mục cho dễ tiêu — <strong>ngân sách có bao nhiêu thì chơi bấy nhiêu</strong>.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <!-- Chart 1: Donut Distribution -->
                 <div class="flex flex-col items-center">
-                    <h3 class="text-lg font-bold text-gray-700 mb-4 text-center">Cơ Cấu Chi Tiêu (Tổng 3.2 Triệu)</h3>
+                    <h3 class="text-lg font-bold text-gray-700 mb-4 text-center">Cơ Cấu Chi Tiêu (Tổng 2.0 Triệu)</h3>
                     <div class="chart-container">
                         <canvas id="budgetDonutChart"></canvas>
                     </div>
@@ -287,8 +286,7 @@
                         <canvas id="budgetBarChart"></canvas>
                     </div>
                     <p class="text-sm text-gray-500 mt-4 text-center italic max-w-xs">
-                        *Ăn uống: Giảm còn 450k/người (Ăn ngon nhưng quán bình dân).
-                        *Dự phòng: Giảm còn 300k (Đi cẩn thận là đủ).
+                        *Ưu tiên: phòng ổn áp, ăn ngon vừa đủ, còn chút “vui chơi” (cà phê/parking/ăn vặt).
                     </p>
                 </div>
             </div>
@@ -316,7 +314,7 @@
                 <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-8 w-full">
                     <div class="order-1 w-full md:w-5/12 px-6 py-4 bg-white rounded-lg shadow-md border-r-4 border-yellow-500 mt-4 md:mt-0 md:text-right">
                         <h3 class="font-bold text-yellow-700 text-lg">Ăn Sáng Nhẹ Nhàng</h3>
-                        <p class="text-sm text-gray-600">Bánh mì hoặc xôi dọc đường (~20k-30k) để tiết kiệm hơn là vào quán phở lớn.</p>
+                        <p class="text-sm text-gray-600">Tạt bánh mì/xôi cho nhanh rồi phi tiếp. Tới Vũng Tàu mình để bụng dành cho hải sản sau nha.</p>
                     </div>
                     <div class="z-20 flex items-center order-1 bg-yellow-500 shadow-xl w-12 h-12 rounded-full justify-center text-white font-bold text-sm">07:00</div>
                     <div class="order-1 w-full md:w-5/12"></div>
@@ -337,8 +335,8 @@
                 <!-- Item 4 -->
                 <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-8 w-full">
                     <div class="order-1 w-full md:w-5/12 px-6 py-4 bg-white rounded-lg shadow-md border-r-4 border-teal-500 mt-4 md:mt-0 md:text-right">
-                        <h3 class="font-bold text-teal-800 text-lg">Tắm Biển & Hoàng Hôn</h3>
-                        <p class="text-sm text-gray-600">Bãi Sau (Free). Chụp hình sống ảo ở Mũi Nghinh Phong (Free).</p>
+                        <h3 class="font-bold text-teal-800 text-lg">Cung Biển & Hoàng Hôn</h3>
+                        <p class="text-sm text-gray-600">Chạy một vòng cung biển <strong>Trần Phú – Bãi Dâu</strong>, ghé <strong>Hải đăng Vũng Tàu</strong> (view gió xịn), rồi kết ở <strong>Mũi Nghinh Phong</strong> ngắm hoàng hôn cho đã.</p>
                     </div>
                     <div class="z-20 flex items-center order-1 bg-teal-500 shadow-xl w-12 h-12 rounded-full justify-center text-white font-bold text-sm">16:00</div>
                     <div class="order-1 w-full md:w-5/12"></div>
@@ -360,7 +358,7 @@
                     </div>
                     <div class="p-6">
                         <h3 class="font-bold text-xl mb-2 text-gray-800">Sáng Tự Do</h3>
-                        <p class="text-gray-600 text-sm">Ăn sáng tự túc (Bánh mì chảo/Bún riêu). Thời gian này <strong>team có thể đi bất cứ đâu chưa kịp đi hôm qua</strong> (Hồ Mây, Bảo Tàng, hoặc đơn giản là chạy xe vòng quanh đường ven biển).</p>
+                        <p class="text-gray-600 text-sm">Ăn sáng nhẹ rồi chọn 1 kèo cho vui: <strong>Bến thuyền Marina</strong> (check-in kiểu “biển Tây”), hoặc <strong>Bạch Dinh</strong> (vibe cổ điển), hoặc quay lại <strong>Hải đăng</strong> nếu hôm qua chưa kịp đi.</p>
                     </div>
                 </div>
 
@@ -370,8 +368,8 @@
                         <span class="font-bold text-teal-800">10:00 - 11:30</span>
                     </div>
                     <div class="p-6">
-                        <h3 class="font-bold text-xl mb-2 text-gray-800">Đồi Con Heo</h3>
-                        <p class="text-gray-600 text-sm">Địa điểm check-in miễn phí, view đẹp. Tranh thủ ghé trước khi trả phòng.</p>
+                        <h3 class="font-bold text-xl mb-2 text-gray-800">Ngọn Hải Đăng</h3>
+                        <p class="text-gray-600 text-sm">Chạy lên sớm cho mát, vừa ngắm toàn cảnh vừa chụp hình. Đi nhẹ nhàng thôi, đường lên có đoạn dốc.</p>
                     </div>
                 </div>
 
@@ -382,7 +380,7 @@
                     </div>
                     <div class="p-6">
                         <h3 class="font-bold text-xl mb-2 text-gray-800">Lẩu Cá Đuối</h3>
-                        <p class="text-gray-600 text-sm">Vẫn giữ món này vì là đặc sản, nhưng gọi nồi vừa phải, ăn kèm rau bún cho no (~120k/người).</p>
+                        <p class="text-gray-600 text-sm">Đặc sản “đúng bài”. Tụi mình gọi nồi vừa đủ + thêm rau bún, ăn xong là lăn về Sài Gòn đẹp.</p>
                     </div>
                 </div>
             </div>
@@ -406,8 +404,8 @@
             <div class="flex items-center gap-2">
                 <span class="text-xl">🤖</span>
                 <div>
-                    <h3 class="font-bold">Thổ Địa Tiết Kiệm</h3>
-                    <p class="text-xs text-teal-100 opacity-80">OS2-DX Budget Guide</p>
+                    <h3 class="font-bold">Thổ Địa Vũng Tàu</h3>
+                    <p class="text-xs text-teal-100 opacity-80">OS2-DX Trip Buddy</p>
                 </div>
             </div>
             <button id="closeChatBtn" class="hover:bg-white/20 rounded-full p-1 transition-colors">
@@ -420,15 +418,15 @@
         <!-- Chat History -->
         <div id="chatHistory" class="flex-1 overflow-y-auto p-4 bg-gray-50">
             <div class="chat-message ai">
-                <p>Chào nhóm OS2-DX! Ngân sách đã được tối ưu xuống <strong>600~700K/người</strong>. Trong khoảng thời gian "Free Time", nếu chưa biết đi đâu cho tiết kiệm thì cứ hỏi mình nhé! 💰</p>
+                <p>Ê OS2-DX ơi! Tụi mình chốt <strong>500K/người</strong> cho chuyến 2N1Đ. Muốn kèo check-in “đặc biệt”, chỗ chơi vui, quán ăn ổn áp… cứ hỏi mình, mình gợi ý trong đúng khung ngân sách luôn.</p>
             </div>
         </div>
 
         <!-- Quick Prompts -->
         <div class="px-4 py-2 bg-gray-50 border-t border-gray-200 overflow-x-auto whitespace-nowrap scrollbar-hide">
-            <button onclick="sendQuickPrompt('Gợi ý chỗ ăn sáng dưới 30k')" class="inline-block px-3 py-1 bg-white border border-teal-200 text-teal-600 rounded-full text-xs hover:bg-teal-50 mr-2">🥪 Ăn sáng rẻ</button>
-            <button onclick="sendQuickPrompt('Địa điểm check-in miễn phí đẹp')" class="inline-block px-3 py-1 bg-white border border-teal-200 text-teal-600 rounded-full text-xs hover:bg-teal-50 mr-2">📸 Check-in Free</button>
-            <button onclick="sendQuickPrompt('Mua hải sản ở đâu rẻ nhất?')" class="inline-block px-3 py-1 bg-white border border-teal-200 text-teal-600 rounded-full text-xs hover:bg-teal-50">🦀 Hải sản rẻ</button>
+            <button onclick="sendQuickPrompt('Gợi ý ăn sáng ngon - gọn ở Vũng Tàu')" class="inline-block px-3 py-1 bg-white border border-teal-200 text-teal-600 rounded-full text-xs hover:bg-teal-50 mr-2">🥪 Ăn sáng ngon</button>
+            <button onclick="sendQuickPrompt('Gợi ý chỗ chơi vui, check-in đặc biệt ở Vũng Tàu')" class="inline-block px-3 py-1 bg-white border border-teal-200 text-teal-600 rounded-full text-xs hover:bg-teal-50 mr-2">📸 Chỗ chơi đặc biệt</button>
+            <button onclick="sendQuickPrompt('Gợi ý quán hải sản ổn áp cho nhóm 4 người')" class="inline-block px-3 py-1 bg-white border border-teal-200 text-teal-600 rounded-full text-xs hover:bg-teal-50">🦀 Hải sản</button>
         </div>
 
         <!-- Input Area -->
@@ -483,22 +481,21 @@
 
         // --- 3. Budget Donut Chart (UPDATED) ---
         const donutCtx = document.getElementById('budgetDonutChart').getContext('2d');
-        const budgetLabels = ["Ăn uống", "Chỗ ở", "Dự phòng", "Xăng xe", "Vé tham quan"];
+        const budgetLabels = ["Ăn uống", "Chỗ ở", "Di chuyển", "Vui chơi"];
         const wrappedBudgetLabels = budgetLabels.map(l => wrapLabel(l));
 
-        // New total: 3.2M. Food: 1.8M, Backup: 300k
+        // Total: 2.0M (500k/person x 4 people). No contingency line item.
         new Chart(donutCtx, {
             type: 'doughnut',
             data: {
                 labels: wrappedBudgetLabels,
                 datasets: [{
-                    data: [1800000, 600000, 300000, 300000, 200000],
+                    data: [1000000, 450000, 350000, 200000],
                     backgroundColor: [
                         '#EF4444', // Red - Eating
                         '#F59E0B', // Orange - Hotel
-                        '#10B981', // Green - Backup
-                        '#3B82F6', // Blue - Gas
-                        '#8B5CF6'  // Purple - Tickets
+                        '#3B82F6', // Blue - Travel
+                        '#8B5CF6'  // Purple - Fun
                     ],
                     borderWidth: 2,
                     borderColor: '#ffffff'
@@ -518,7 +515,7 @@
                     tooltip: tooltipConfig,
                     title: {
                         display: true,
-                        text: 'Ngân Sách Mới: 3.2 Triệu (600~700K/người)',
+                        text: 'Ngân Sách: 2.0 Triệu (500K/người)',
                         font: { size: 16 }
                     }
                 }
@@ -534,7 +531,7 @@
                 labels: wrappedBudgetLabels,
                 datasets: [{
                     label: 'Chi phí (VNĐ)',
-                    data: [1800000, 600000, 300000, 300000, 200000],
+                    data: [1000000, 450000, 350000, 200000],
                     backgroundColor: '#0d9488', // Teal
                     borderRadius: 6,
                 }]
@@ -557,7 +554,7 @@
                     tooltip: tooltipConfig,
                     title: {
                         display: true,
-                        text: 'Chi Tiết Hạng Mục (Đã Cắt Giảm)',
+                        text: 'Chi Tiết Hạng Mục (Chốt 500K/người)',
                         font: { size: 16 }
                     }
                 }
@@ -585,20 +582,21 @@
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
         const systemPrompt = `
-            Bạn là một hướng dẫn viên du lịch địa phương tại Vũng Tàu (Thổ địa Vũng Tàu).
+            Bạn là một hướng dẫn viên du lịch địa phương tại Vũng Tàu (Thổ địa Vũng Tàu), nói chuyện thân thiện như bạn bè.
             
-            NGỮ CẢNH ĐẶC BIỆT CỦA NHÓM OS2-DX:
+            NGỮ CẢNH CỦA NHÓM OS2-DX:
             - Thành viên: nguyn_don_wut, Én (bé Na), duyhung, hữu khen...
             - Thời gian: 2 ngày 1 đêm (02/01/2026 - 03/01/2026).
             - Phương tiện: Xe máy.
-            - **NGÂN SÁCH MỚI: 800.000 VNĐ/người** (Đã cắt giảm, cần cực kỳ tiết kiệm).
-            - **YÊU CẦU MỚI:** Có các khung giờ "Free Time" trong lịch trình để đi tự do.
+            - **NGÂN SÁCH: 500.000 VNĐ/người** (ngân sách có bao nhiêu thì chơi bấy nhiêu, không cần mục “dự phòng”).
+            - Có các khung giờ "Free Time" để đi tự do.
 
             NHIỆM VỤ CỦA BẠN:
-            - Gợi ý các quán ăn ngon - bổ - rẻ thực sự (ưu tiên quán vỉa hè, dân địa phương ăn, giá dưới 50k-100k).
-            - Gợi ý các địa điểm tham quan MIỄN PHÍ cho các khung giờ Free Time.
-            - Khi nhắc đến ngân sách, hãy nhắc nhở vui vẻ về việc "tiết kiệm để cưới vợ" hoặc tương tự.
-            - Luôn nhắc tên nhóm OS2-DX.
+            - Gợi ý chỗ chơi/check-in “đặc biệt”, vui, hợp nhóm 4 người.
+            - Gợi ý quán ăn ngon và hợp túi tiền (ưu tiên quán địa phương, dễ đi xe máy).
+            - Nếu gợi ý có phí/vé, hãy nói rõ mức phí ước tính và đưa phương án thay thế miễn phí.
+            - Không cần khoe “dư ngân sách” hay so sánh hơn kém, chỉ tư vấn cách chia tiền cho hợp lý trong ngân sách.
+            - Luôn xưng hô kiểu "tụi mình/anh em" và nhắc tên nhóm OS2-DX.
             - Định dạng câu trả lời bằng Markdown.
         `;
 
