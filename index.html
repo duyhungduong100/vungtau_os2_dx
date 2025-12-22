@@ -1,703 +1,898 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chào năm mới OS2-DX Vũng Tàu 2026</title>
-    <!-- Tailwind CSS -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OS2-DX Vũng Tàu Trip 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Marked.js for Markdown rendering in chat -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    
-    <!-- Custom Palette & Styles -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Quicksand", "sans-serif"],
+            },
+            colors: {
+              sea: "#0EA5E9",
+              sun: "#F59E0B",
+              coral: "#F43F5E",
+              sand: "#FEF3C7",
+            },
+            animation: {
+              "fade-in-up": "fadeInUp 0.8s ease-out forwards",
+              float: "float 3s ease-in-out infinite",
+            },
+            keyframes: {
+              fadeInUp: {
+                "0%": { opacity: "0", transform: "translateY(20px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+
     <style>
-        :root {
-            /* Palette: Tropical Vibrance */
-            --color-bg: #F0F9FF; /* Light Sky Blue */
-            --color-card: #FFFFFF;
-            --color-primary: #0284C7; /* Ocean Blue */
-            --color-secondary: #F59E0B; /* Sun Amber */
-            --color-accent: #EF4444; /* Coral Red */
-            --color-text: #1E293B; /* Slate 800 */
-        }
+      body {
+        background-color: #f0f9ff;
+        scroll-behavior: smooth;
+      }
 
-        body {
-            background-color: var(--color-bg);
-            color: var(--color-text);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #0ea5e9;
+        border-radius: 4px;
+      }
 
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 400px;
-        }
+      /* Timeline Connector */
+      .timeline-connector {
+        position: absolute;
+        left: 24px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #e2e8f0;
+        z-index: 0;
+      }
 
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 400px;
-            }
+      @media (min-width: 768px) {
+        .timeline-connector {
+          left: 50%;
+          transform: translateX(-50%);
         }
+      }
 
-        /* Timeline Styles */
-        .timeline-line {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 100%;
-            background-color: #CBD5E1;
-            z-index: 0;
-        }
-        
-        .timeline-item {
-            position: relative;
-            z-index: 10;
-        }
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
 
-        /* Utilities */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        /* AI Chat Widget Styles */
-        .ai-widget-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 50;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .ai-widget-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .ai-chat-window {
-            position: fixed;
-            bottom: 6rem;
-            right: 2rem;
-            width: 90%;
-            max-width: 400px;
-            height: 500px;
-            z-index: 49;
-            transform-origin: bottom right;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .ai-chat-window.hidden-chat {
-            opacity: 0;
-            transform: scale(0.9) translateY(20px);
-            pointer-events: none;
-        }
-
-        .chat-message {
-            margin-bottom: 1rem;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .chat-message.user {
-            background-color: #0284C7;
-            color: white;
-            align-self: flex-end;
-            margin-left: 2rem;
-        }
-
-        .chat-message.ai {
-            background-color: #F3F4F6;
-            color: #1F2937;
-            align-self: flex-start;
-            margin-right: 2rem;
-            border-left: 3px solid #F59E0B;
-        }
-
-        .chat-message.ai p {
-            margin-bottom: 0.5rem;
-        }
-        .chat-message.ai ul {
-            list-style-type: disc;
-            margin-left: 1.2rem;
-        }
-        
-        .typing-indicator span {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background-color: #9CA3AF;
-            border-radius: 50%;
-            animation: typing 1.4s infinite ease-in-out both;
-            margin: 0 1px;
-        }
-        
-        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-        
-        @keyframes typing {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
-        
-        /* Free Time Highlight */
-        .free-time-badge {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-left: 8px;
-            display: inline-block;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
+      .price-badge {
+        background: #ecfdf5;
+        color: #059669;
+        border: 1px solid #a7f3d0;
+        font-size: 0.75rem;
+        padding: 2px 8px;
+        border-radius: 9999px;
+        font-weight: 700;
+      }
     </style>
-    <!-- 
-    PALETTE SELECTION: "Tropical Vibrance" 
-    Primary: #0284C7 (Ocean Blue)
-    Secondary: #F59E0B (Sun/Sand)
-    Accent: #EF4444 (Coral Red)
-    
-    UPDATES:
-    - Updated budget to 500k/person (total 2.000.000 VNĐ for 4 people).
-    - Removed contingency/backup line item.
-    - Refreshed itinerary spots to be more fun/unique in Vũng Tàu.
-    - Updated AI prompt to match the new vibe & budget.
-    
-    NO SVG USED. NO MERMAID USED.
-    -->
-</head>
-<body class="antialiased selection:bg-yellow-200 selection:text-blue-900">
+  </head>
+  <body class="text-slate-800 antialiased">
+    <header
+      class="relative w-full h-[60vh] min-h-[400px] overflow-hidden rounded-b-[3rem] shadow-2xl"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-sea to-teal-600"
+      ></div>
+      <div
+        class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"
+      ></div>
 
-    <!-- HERO SECTION -->
-    <header class="w-full bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-lg">
-        <div class="container mx-auto px-4 py-12 text-center">
-            <div class="inline-block bg-yellow-400 text-blue-900 font-bold px-3 py-1 rounded-full text-sm mb-4">
-                02/01/2026 - 03/01/2026
-            </div>
-            <h1 class="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight uppercase leading-tight">
-                Chào năm mới<br class="md:hidden"> OS2-DX Vũng Tàu 2026
-            </h1>
-            <p class="text-xl md:text-2xl font-light opacity-90 mb-2">
-                Đón năm mới cùng nheo
-            </p>
-            
-            <!-- Team Members List -->
-            <div class="inline-block bg-white/10 backdrop-blur-md rounded-xl p-4 mb-6 border border-white/20">
-                <span class="block text-xs uppercase tracking-wider text-emerald-200 mb-1">Biệt Đội OS2-DX</span>
-                <p class="text-sm md:text-lg font-bold text-white">
-                    nguyn_don_wut • Én (bé Na) • duyhung • hữu khen
-                </p>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mt-4">
-                <div class="bg-white/20 backdrop-blur rounded-lg p-3">
-                    <div class="text-2xl">👥</div>
-                    <div class="font-bold">4 Thành viên</div>
-                </div>
-                <div class="bg-white/20 backdrop-blur rounded-lg p-3">
-                    <div class="text-2xl">🛵</div>
-                    <div class="font-bold">Xe máy</div>
-                </div>
-                <div class="bg-white/20 backdrop-blur rounded-lg p-3 border-2 border-yellow-400 text-yellow-300">
-                    <div class="text-2xl">💰</div>
-                    <div class="font-bold">500k/Người</div>
-                </div>
-                <div class="bg-white/20 backdrop-blur rounded-lg p-3">
-                    <div class="text-2xl">🌊</div>
-                    <div class="font-bold">2 Ngày 1 Đêm</div>
-                </div>
-            </div>
+      <div
+        class="relative z-10 h-full flex flex-col justify-center items-center text-center px-4 animate-fade-in-up"
+      >
+        <div
+          class="bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-white text-sm font-bold mb-4 border border-white/30"
+        >
+          02/01/2026 - 03/01/2026
         </div>
+        <h1
+          class="text-4xl md:text-6xl font-extrabold text-white mb-2 tracking-tight drop-shadow-md"
+        >
+          OS2-DX <br />
+          VUNG TAU TRIP
+        </h1>
+        <p class="text-white/90 text-lg md:text-xl font-medium mb-6">
+          Chinh phục 500k & Food Tour
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-3">
+          <span
+            class="bg-white/10 backdrop-blur text-white px-3 py-1 rounded-lg text-sm border border-white/20"
+            >👤 nguyn_don_wut</span
+          >
+          <span
+            class="bg-white/10 backdrop-blur text-white px-3 py-1 rounded-lg text-sm border border-white/20"
+            >👤 Én (bé Na)</span
+          >
+          <span
+            class="bg-white/10 backdrop-blur text-white px-3 py-1 rounded-lg text-sm border border-white/20"
+            >👤 duyhung</span
+          >
+          <span
+            class="bg-white/10 backdrop-blur text-white px-3 py-1 rounded-lg text-sm border border-white/20"
+            >👤 hữu khen</span
+          >
+        </div>
+      </div>
+
+      <div class="absolute top-10 left-10 text-4xl animate-float opacity-50">
+        🌊
+      </div>
+      <div
+        class="absolute bottom-20 right-10 text-4xl animate-float opacity-50"
+        style="animation-delay: 1.5s"
+      >
+        🛵
+      </div>
     </header>
 
-    <main class="container mx-auto px-4 py-10 space-y-16 pb-32">
+    <main class="container mx-auto px-4 -mt-20 relative z-20 pb-32">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+        <div
+          class="glass-panel rounded-2xl p-6 shadow-lg animate-fade-in-up"
+          style="animation-delay: 0.1s"
+        >
+          <h3 class="text-lg font-bold text-slate-600 flex items-center gap-2">
+            <span>💸</span> Ngân Sách
+          </h3>
+          <div class="mt-4 flex items-end gap-2">
+            <span class="text-4xl font-extrabold text-emerald-600">500k</span>
+            <span class="text-sm text-slate-500 mb-1">/người</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2">*Tổng team: 2.000.000đ</p>
+          <div class="mt-4 h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div class="h-full bg-emerald-500 w-full"></div>
+          </div>
+        </div>
 
-        <!-- SECTION 1: PREPARATION -->
-        <section id="preparation">
-            <div class="max-w-4xl mx-auto">
-                <h2 class="text-3xl font-bold text-teal-800 mb-6 flex items-center gap-3 border-b-4 border-yellow-400 pb-2 inline-block">
-                    <span>🛠️</span> Công Tác Chuẩn Bị
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Card 1 -->
-                    <div class="glass-card shadow-lg rounded-xl p-6 border-t-4 border-teal-500">
-                        <div class="text-4xl mb-4 text-center">🏍️</div>
-                        <h3 class="text-xl font-bold text-center mb-3 text-teal-700">Kiểm Tra Xe</h3>
-                        <p class="text-sm text-gray-600 text-center">Bảo dưỡng nhẹ + bơm lốp cho yên tâm. Tụi mình đi đường xa nên an toàn là số 1.</p>
-                    </div>
+        <div
+          class="glass-panel rounded-2xl p-6 shadow-lg animate-fade-in-up"
+          style="animation-delay: 0.2s"
+        >
+          <h3 class="text-lg font-bold text-slate-600 flex items-center gap-2">
+            <span>📍</span> Điểm Mới
+          </h3>
+          <ul class="mt-3 space-y-2 text-sm text-slate-700">
+            <li class="flex items-center gap-2">
+              <span class="text-coral">●</span> Tiệm Vỏ Sò (Trần Phú)
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-coral">●</span> Moana Coffee (Hẻm 60)
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-coral">●</span> Bánh Flan Lê Lai (16h)
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-coral">●</span> Karaoke hoặc nhậu thâu
+            </li>
+          </ul>
+        </div>
 
-                    <!-- Card 2 -->
-                    <div class="glass-card shadow-lg rounded-xl p-6 border-t-4 border-yellow-500">
-                        <div class="text-4xl mb-4 text-center">🏨</div>
-                        <h3 class="text-xl font-bold text-center mb-3 text-yellow-600">Chốt Phòng</h3>
-                        <p class="text-sm text-gray-600 text-center">Mục tiêu: phòng 4 người khoảng <strong>450k-500k/đêm</strong>. Ưu tiên sạch sẽ, gửi xe ok, ra biển chạy 5-10 phút là ổn.</p>
-                    </div>
+        <div
+          class="glass-panel rounded-2xl p-4 shadow-lg flex flex-col items-center justify-center animate-fade-in-up"
+          style="animation-delay: 0.3s"
+        >
+          <div class="h-32 w-full">
+            <canvas id="budgetChart"></canvas>
+          </div>
+        </div>
+      </div>
 
-                    <!-- Card 3 -->
-                    <div class="glass-card shadow-lg rounded-xl p-6 border-t-4 border-red-500">
-                        <div class="text-4xl mb-4 text-center">🎒</div>
-                        <h3 class="text-xl font-bold text-center mb-3 text-red-600">Đồ Cá Nhân</h3>
-                        <p class="text-sm text-gray-600 text-center">Mang nước suối + áo khoác mỏng. Có snack thì càng vui, khỏi bị tụt mood giữa đường.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 2: BUDGET ANALYSIS -->
-        <section id="budget" class="bg-white rounded-2xl shadow-xl p-8">
-            <h2 class="text-3xl font-bold text-teal-800 mb-6 flex items-center gap-3 border-b-4 border-yellow-400 pb-2 inline-block">
-                <span>💸</span> Ngân Sách Chốt Kèo
+      <section class="mb-16">
+        <div class="flex items-center gap-4 mb-8">
+          <div
+            class="w-12 h-12 bg-sea rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-sea/30"
+          >
+            01
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-slate-800">
+              Khởi Hành & Food Tour
             </h2>
-            <p class="text-gray-600 mb-8 text-lg">
-                Ngân sách chốt: <strong>2.000.000 VNĐ (500K/người)</strong>. Tụi mình chia hạng mục cho dễ tiêu — <strong>ngân sách có bao nhiêu thì chơi bấy nhiêu</strong>.
-            </p>
+            <p class="text-slate-500">Thứ Sáu, 02/01/2026</p>
+          </div>
+        </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <!-- Chart 1: Donut Distribution -->
-                <div class="flex flex-col items-center">
-                    <h3 class="text-lg font-bold text-gray-700 mb-4 text-center">Cơ Cấu Chi Tiêu (Tổng 2.0 Triệu)</h3>
-                    <div class="chart-container">
-                        <canvas id="budgetDonutChart"></canvas>
-                    </div>
-                </div>
+        <div class="relative pl-0 md:pl-0">
+          <div class="timeline-connector hidden md:block"></div>
 
-                <!-- Chart 2: Detailed Bar -->
-                <div class="flex flex-col items-center">
-                    <h3 class="text-lg font-bold text-gray-700 mb-4 text-center">Chi Tiết Hạng Mục (VNĐ)</h3>
-                    <div class="chart-container">
-                        <canvas id="budgetBarChart"></canvas>
-                    </div>
-                    <p class="text-sm text-gray-500 mt-4 text-center italic max-w-xs">
-                        *Ưu tiên: phòng ổn áp, ăn ngon vừa đủ, còn chút “vui chơi” (cà phê/parking/ăn vặt).
+          <div
+            class="relative z-10 mb-8 md:grid md:grid-cols-2 md:gap-8 items-center group"
+          >
+            <div class="md:text-right mb-2 md:mb-0">
+              <span
+                class="inline-block bg-slate-800 text-white text-xs font-bold px-2 py-1 rounded-md mb-2"
+                >05:30 - 08:30</span
+              >
+              <h3 class="text-lg font-bold text-sea">Xuất phát & Ăn sáng</h3>
+              <p class="text-sm text-slate-600">
+                Di chuyển xe máy. Ăn sáng nhanh gọn (Bánh mì/Xôi) dọc đường.
+              </p>
+              <span class="price-badge mt-2 inline-block">~30k/người</span>
+            </div>
+            <div class="hidden md:flex justify-center items-center">
+              <div
+                class="w-4 h-4 bg-sea rounded-full border-4 border-white shadow-md"
+              ></div>
+            </div>
+            <div
+              class="md:hidden w-2 h-full absolute left-[23px] bg-slate-200 -z-10 top-2"
+            ></div>
+          </div>
+
+          <div
+            class="relative z-10 mb-8 md:grid md:grid-cols-2 md:gap-8 items-center group"
+          >
+            <div class="hidden md:block"></div>
+            <div
+              class="hidden md:flex justify-center items-center absolute left-1/2 transform -translate-x-1/2"
+            >
+              <div
+                class="w-4 h-4 bg-coral rounded-full border-4 border-white shadow-md"
+              ></div>
+            </div>
+            <div
+              class="glass-panel p-5 rounded-xl border-l-4 border-coral shadow-sm hover:shadow-md transition-all"
+            >
+              <span
+                class="inline-block bg-coral/10 text-coral text-xs font-bold px-2 py-1 rounded-md mb-2"
+                >09:00 - 10:15</span
+              >
+              <h3 class="text-lg font-bold text-slate-800">
+                🏛️ Tham quan Bạch Dinh
+              </h3>
+              <div class="flex items-start gap-2 mt-1 mb-2">
+                <span class="text-lg">📍</span>
+                <p class="text-sm font-semibold text-slate-700">
+                  Số 6 Trần Phú
+                </p>
+              </div>
+              <p class="text-sm text-slate-600">
+                Tham quan kiến trúc, chụp ảnh view nhìn ra biển. Đi buổi sáng
+                trời mát, ảnh đẹp.
+              </p>
+              <span class="price-badge mt-2 inline-block"
+                >Vé tuỳ thời điểm</span
+              >
+            </div>
+          </div>
+
+          <div
+            class="relative z-10 mb-8 md:grid md:grid-cols-2 md:gap-8 items-center group"
+          >
+            <div class="md:text-right mb-2 md:mb-0">
+              <span
+                class="inline-block bg-coral/10 text-coral text-xs font-bold px-2 py-1 rounded-md mb-2"
+                >10:30 - 11:30</span
+              >
+              <h3 class="text-lg font-bold text-slate-800">
+                📸 Moana Vũng Tàu
+              </h3>
+              <p class="text-sm text-slate-600">
+                Check-in sống ảo view biển cực xịn. Uống nước nghỉ ngơi sau khi
+                tham quan.
+              </p>
+              <p class="text-xs text-slate-500 mt-1">📍 Hẻm 60 Trần Phú</p>
+              <span class="price-badge mt-2 inline-block">~60k/nước</span>
+            </div>
+            <div class="hidden md:flex justify-center items-center">
+              <div
+                class="w-4 h-4 bg-coral rounded-full border-4 border-white shadow-md"
+              ></div>
+            </div>
+          </div>
+
+          <div
+            class="relative z-10 mb-8 md:grid md:grid-cols-2 md:gap-8 items-center group"
+          >
+            <div class="md:text-right mb-2 md:mb-0">
+              <span
+                class="inline-block bg-slate-200 text-slate-600 text-xs font-bold px-2 py-1 rounded-md mb-2"
+                >11:45 - 14:00</span
+              >
+              <h3 class="text-lg font-bold text-slate-800">
+                Ăn Trưa & Check-in KS
+              </h3>
+              <p class="text-sm text-slate-600">
+                Ăn trưa cơm niêu/cơm phần. Check-in khách sạn, nghỉ ngơi lấy
+                sức.
+                <br /><b>Khách sạn:</b> The Sóng - Vũng Tàu.
+              </p>
+              <span class="price-badge mt-2 inline-block"
+                >Ăn 35~40k | KS ~120k</span
+              >
+            </div>
+            <div class="hidden md:flex justify-center items-center">
+              <div
+                class="w-4 h-4 bg-slate-400 rounded-full border-4 border-white shadow-md"
+              ></div>
+            </div>
+          </div>
+
+          <div
+            class="relative z-10 mb-8 md:grid md:grid-cols-2 md:gap-8 items-center group"
+          >
+            <div
+              class="glass-panel p-5 rounded-xl border-r-4 border-coral shadow-sm md:text-right md:order-1 order-2"
+            >
+              <span
+                class="inline-block bg-coral text-white text-xs font-bold px-2 py-1 rounded-md mb-2"
+                >15:00 - 15:15</span
+              >
+              <h3 class="text-lg font-bold text-slate-800">
+                Tiệm Vỏ Sò (ghé tham quan)
+              </h3>
+              <div class="flex items-center md:justify-end gap-2 mt-1 mb-2">
+                <p class="text-sm font-semibold text-slate-700">
+                  📍 6/3 Trần Phú
+                </p>
+              </div>
+              <p class="text-sm text-slate-600">
+                Ghé 15 phút tham quan/chụp vài tấm ảnh. Ai thích mua vỏ sò/đồ
+                lưu niệm thì tự do mua (optional).
+              </p>
+              <span class="price-badge mt-2 inline-block">Optional</span>
+            </div>
+            <div
+              class="hidden md:flex justify-center items-center md:order-2 order-1"
+            >
+              <div
+                class="w-4 h-4 bg-coral rounded-full border-4 border-white shadow-md"
+              ></div>
+            </div>
+          </div>
+
+          <div
+            class="relative z-10 mb-8 md:grid md:grid-cols-2 md:gap-8 items-center group"
+          >
+            <div class="hidden md:block"></div>
+            <div
+              class="hidden md:flex justify-center items-center absolute left-1/2 transform -translate-x-1/2"
+            >
+              <div
+                class="w-8 h-8 bg-sea rounded-full border-4 border-white shadow-md flex items-center justify-center text-xs"
+              >
+                📷
+              </div>
+            </div>
+            <div
+              class="glass-panel p-5 rounded-xl border-l-4 border-sea shadow-sm hover:shadow-md transition-all"
+            >
+              <span
+                class="inline-block bg-sea/10 text-sea text-xs font-bold px-2 py-1 rounded-md mb-2"
+                >15:20 - 15:40</span
+              >
+              <h3 class="text-lg font-bold text-slate-800">
+                Check-in sống ảo Hẻm 444 Trần Phú
+              </h3>
+              <div class="flex items-start gap-2 mt-1 mb-2">
+                <span class="text-lg">📍</span>
+                <p class="text-sm font-semibold text-slate-700">
+                  Hẻm 444 Trần Phú
+                </p>
+              </div>
+              <p class="text-sm text-slate-600">
+                Chụp ảnh nhanh 1-2 set. Canh ánh sáng chiều để ảnh "ăn" hơn.
+              </p>
+              <span class="price-badge mt-2 inline-block">Free</span>
+            </div>
+          </div>
+
+          <div
+            class="relative z-10 mb-8 md:grid md:grid-cols-2 md:gap-8 items-center group"
+          >
+            <div class="hidden md:block"></div>
+            <div
+              class="hidden md:flex justify-center items-center absolute left-1/2 transform -translate-x-1/2"
+            >
+              <div
+                class="w-8 h-8 bg-sun rounded-full border-4 border-white shadow-md flex items-center justify-center text-xs"
+              >
+                😋
+              </div>
+            </div>
+            <div
+              class="glass-panel p-5 rounded-xl border-l-4 border-sun shadow-md bg-orange-50/50"
+            >
+              <span
+                class="inline-block bg-sun text-white text-xs font-bold px-2 py-1 rounded-md mb-2"
+                >16:00 SHARP</span
+              >
+              <h3 class="text-lg font-bold text-slate-800">
+                Combo "Ăn Xế" Huyền Thoại
+              </h3>
+
+              <div class="mt-3 space-y-3">
+                <div class="flex gap-3">
+                  <div
+                    class="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm"
+                  >
+                    🍮
+                  </div>
+                  <div>
+                    <p class="font-bold text-sm">Bánh Flan Trứng/Phô Mai</p>
+                    <p class="text-xs text-slate-500">
+                      📍 Hẻm 160 Lê Lai (Đến đúng 16h kẻo hết!)
                     </p>
+                    <span class="price-badge mt-1 inline-block">~15k/cái</span>
+                  </div>
                 </div>
+                <div class="w-full h-px bg-orange-200"></div>
+                <div class="flex gap-3">
+                  <div
+                    class="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm"
+                  >
+                    🍗
+                  </div>
+                  <div>
+                    <p class="font-bold text-sm">Da Gà Chiên Nước Mắm</p>
+                    <p class="text-xs text-slate-500">
+                      📍 126A Hạ Long (Mở 16:00 - 23:30)
+                    </p>
+                    <p class="text-xs italic text-slate-400">
+                      Mua mang ra bờ kè ngồi ăn ngắm biển.
+                    </p>
+                    <span class="price-badge mt-1 inline-block">~30k/phần</span>
+                  </div>
+                </div>
+                <div class="w-full h-px bg-orange-200"></div>
+                <div class="flex gap-3">
+                  <div
+                    class="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm"
+                  >
+                    😋
+                  </div>
+                  <div>
+                    <p class="font-bold text-sm">Tùy chọn thêm</p>
+                    <p class="text-xs text-slate-500">
+                      📍 Địa điểm bất kì
+                    </p>
+                    <p class="text-xs italic text-slate-400">
+                      Mua thêm mang ra bờ kè ngồi ăn ngắm biển.
+                    </p>
+                    <span class="price-badge mt-1 inline-block">~30k/phần</span>
+                  </div>
+                </div>
+                <div class="w-full h-px bg-orange-200"></div>
+                <div class="flex gap-3">
+                  <div
+                    class="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm"
+                  >
+                    🍹
+                  </div>
+                  <div>
+                    <p class="font-bold text-sm">Tà tưa</p>
+                    <p class="text-xs text-slate-500">
+                      📍 Mua thêm TS/nước nữa 🧉🍵🥂
+                    </p>
+                    <p class="text-xs italic text-slate-400">
+                      Phải mua thêm nước nữa rồi ngắm biển.
+                    </p>
+                    <span class="price-badge mt-1 inline-block">~25k/ly</span>
+                  </div>
+                </div>
+              </div>
             </div>
-        </section>
+          </div>
 
-        <!-- SECTION 3: ITINERARY DAY 1 -->
-        <section id="day1">
-            <h2 class="text-3xl font-bold text-teal-800 mb-6 flex items-center gap-3 border-b-4 border-yellow-400 pb-2 inline-block">
-                <span>📅</span> Ngày 1: Sài Gòn - Biển & Tự Do
+          <div
+            class="relative z-10 mb-8 md:grid md:grid-cols-2 md:gap-8 items-center group"
+          >
+            <div class="md:text-right mb-2 md:mb-0">
+              <span
+                class="inline-block bg-sun text-white text-xs font-bold px-2 py-1 rounded-md mb-2"
+                >17:10 - 17:55</span
+              >
+              <h3 class="text-lg font-bold text-slate-800">
+                🌅 Lượn cung đường biển ngắm hoàng hôn
+              </h3>
+              <p class="text-sm text-slate-600">
+                Ngắm hoàng hôn <b>trước 18:00</b> (mặt trời lặn sớm). Đi từ tầm
+                17:10 để kịp chọn điểm dừng đẹp.
+              </p>
+              <span class="price-badge mt-2 inline-block">Xăng + nước</span>
+            </div>
+            <div class="hidden md:flex justify-center items-center">
+              <div
+                class="w-8 h-8 bg-sun rounded-full border-4 border-white shadow-md flex items-center justify-center text-xs"
+              >
+                🌇
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="relative z-10 mb-8 md:grid md:grid-cols-2 md:gap-8 items-center group"
+          >
+            <div class="hidden md:block"></div>
+            <div
+              class="hidden md:flex justify-center items-center absolute left-1/2 transform -translate-x-1/2"
+            >
+              <div
+                class="w-8 h-8 bg-rose-500 rounded-full border-4 border-white shadow-md flex items-center justify-center text-xs"
+              >
+                🍡
+              </div>
+            </div>
+            <div
+              class="glass-panel p-5 rounded-xl border-l-4 border-rose-500 shadow-sm hover:shadow-md transition-all"
+            >
+              <span
+                class="inline-block bg-rose-500/10 text-rose-600 text-xs font-bold px-2 py-1 rounded-md mb-2"
+                >18:10 - 18:45</span
+              >
+              <h3 class="text-lg font-bold text-slate-800">Ăn vặt Kawai</h3>
+              <p class="text-sm text-slate-600">
+                Sau hoàng hôn ghé ăn vặt nhẹ nhàng.
+              </p>
+              <p class="text-xs text-slate-500 mt-1">📍 72A Trần Hưng Đạo</p>
+              <span class="price-badge mt-2 inline-block">~20k - 60k</span>
+            </div>
+          </div>
+
+          <div
+            class="relative z-10 mb-8 md:grid md:grid-cols-2 md:gap-8 items-center group"
+          >
+            <div class="md:text-right mb-2 md:mb-0">
+              <span
+                class="inline-block bg-coral text-white text-xs font-bold px-2 py-1 rounded-md mb-2"
+                >19:00 - 20:00</span
+              >
+              <h3 class="text-lg font-bold text-slate-800">�️ Ăn tối</h3>
+              <p class="text-sm text-slate-600">
+                Ăn tối thong thả để lấy sức trước khi đi karaoke hoặc nhậu to
+                nhoe (có thể chọn hải sản/quán ăn gần Bãi Sau tuỳ team).
+              </p>
+              <span class="price-badge mt-2 inline-block">~80k - 200k</span>
+            </div>
+            <div class="hidden md:flex justify-center items-center">
+              <div
+                class="w-4 h-4 bg-coral rounded-full border-4 border-white shadow-md"
+              ></div>
+            </div>
+          </div>
+
+          <div
+            class="relative z-10 mb-8 md:grid md:grid-cols-2 md:gap-8 items-center group"
+          >
+            <div class="hidden md:block"></div>
+            <div
+              class="hidden md:flex justify-center items-center absolute left-1/2 transform -translate-x-1/2"
+            >
+              <div
+                class="w-8 h-8 bg-purple-600 rounded-full border-4 border-white shadow-md flex items-center justify-center text-xs"
+              >
+                🎤
+              </div>
+            </div>
+            <div
+              class="glass-panel p-5 rounded-xl border-l-4 border-purple-600 shadow-lg bg-purple-50/50"
+            >
+              <span
+                class="inline-block bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-md mb-2"
+                >20:30 - 23:30</span
+              >
+              <h3 class="text-lg font-bold text-slate-800">Karaoke</h3>
+              <p class="text-sm text-slate-600 mt-1">
+                Hát hò xả stress. Hệ thống âm thanh xịn xò.
+              </p>
+              <div
+                class="mt-2 bg-yellow-100 border border-yellow-300 p-2 rounded text-xs text-yellow-800"
+              >
+                ⚠️ <b>Lưu ý ngân sách:</b> Dự tính 100k/người (chia sẻ từ quỹ)
+                hoặc Campuchia thêm xièng nếu lổ 💥💣.
+              </div>
+            </div>
+            <div
+              class="glass-panel p-5 rounded-xl border-l-4 border-blue-600 shadow-lg bg-purple-50/50"
+            >
+              <span
+                class="inline-block bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-md mb-2"
+                >23:30 - ??:??</span
+              >
+              <h3 class="text-lg font-bold text-slate-800">
+                Board Game tại phòng
+              </h3>
+              <p class="text-sm text-slate-600 mt-1">
+                Trò chơi tình bạn xả stress. Khả lăng cao là sẽ có quà cho team
+                thắng hoặc ai đó lổ vào ngày mai (Optional thôi ngoe kakaka) .
+              </p>
+              <div
+                class="mt-2 bg-yellow-100 border border-blue-800 p-2 rounded text-xs text-yellow-800"
+              >
+                🐺 <b>Note:</b> Chơi ma soi thì Quốc đem theo nhoa💯. Mà hơi ít
+                người chắc là chơi bài là đẹp nhất ♠️♥️♦️♣️.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="flex items-center gap-4 mb-8">
+          <div
+            class="w-12 h-12 bg-sun rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-sun/30"
+          >
+            02
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-slate-800">
+              Bình Minh & Chill Hết Ngày
             </h2>
-            <div class="relative max-w-3xl mx-auto">
-                <div class="hidden md:block timeline-line bg-teal-200"></div>
+            <p class="text-slate-500">Thứ Bảy, 03/01/2026</p>
+          </div>
+        </div>
 
-                <!-- Item 1 -->
-                <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-8 w-full">
-                    <div class="order-1 w-full md:w-5/12"></div>
-                    <div class="z-20 flex items-center order-1 bg-teal-500 shadow-xl w-12 h-12 rounded-full justify-center text-white font-bold text-sm">05:30</div>
-                    <div class="order-1 w-full md:w-5/12 px-6 py-4 bg-white rounded-lg shadow-md border-l-4 border-teal-500 mt-4 md:mt-0">
-                        <h3 class="font-bold text-teal-800 text-lg">Xuất Phát</h3>
-                        <p class="text-sm text-gray-600">Phà Cát Lái -> Nhơn Trạch. Đi sớm cho mát.</p>
-                    </div>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-xl p-6 shadow-sm border-t-4 border-sea">
+            <h3 class="font-bold text-lg mb-2">05:00 - 06:30 · Bình minh</h3>
+            <p class="text-sm text-slate-600">
+              Dậy sớm chạy ra <b>Mũi Nghinh Phong</b> ngắm bình minh, gió mát,
+              chụp ảnh nhẹ nhàng. Nếu đi xe máy nhớ mặc ấm.
+            </p>
+            <span class="price-badge mt-3 inline-block">Free</span>
+          </div>
 
-                <!-- Item 2 -->
-                <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-8 w-full">
-                    <div class="order-1 w-full md:w-5/12 px-6 py-4 bg-white rounded-lg shadow-md border-r-4 border-yellow-500 mt-4 md:mt-0 md:text-right">
-                        <h3 class="font-bold text-yellow-700 text-lg">Ăn Sáng Nhẹ Nhàng</h3>
-                        <p class="text-sm text-gray-600">Tạt bánh mì/xôi cho nhanh rồi phi tiếp. Tới Vũng Tàu mình để bụng dành cho hải sản sau nha.</p>
-                    </div>
-                    <div class="z-20 flex items-center order-1 bg-yellow-500 shadow-xl w-12 h-12 rounded-full justify-center text-white font-bold text-sm">07:00</div>
-                    <div class="order-1 w-full md:w-5/12"></div>
-                </div>
+          <div class="bg-white rounded-xl p-6 shadow-sm border-t-4 border-sun">
+            <h3 class="font-bold text-lg mb-2">Sáng · Ăn sáng + Cafe</h3>
+            <p class="text-sm text-slate-600">
+              Sau khi ngắm bình minh, ghé ăn sáng (gợi ý: <b>bánh khọt</b>,
+              <b>hủ tiếu</b>, <b>bún</b>) rồi cafe view biển khu
+              <b>Bãi Sau</b> hoặc <b>Bãi Trước</b>.
+            </p>
+            <span class="price-badge mt-3 inline-block">~60k - 150k</span>
+          </div>
 
-                <!-- Item 3: Free Time Inserted -->
-                <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-8 w-full">
-                    <div class="order-1 w-full md:w-5/12"></div>
-                    <div class="z-20 flex items-center order-1 bg-purple-500 shadow-xl w-12 h-12 rounded-full justify-center text-white font-bold text-sm">13:00</div>
-                    <div class="order-1 w-full md:w-5/12 px-6 py-4 bg-white rounded-lg shadow-md border-l-4 border-purple-500 mt-4 md:mt-0">
-                        <h3 class="font-bold text-purple-800 text-lg flex items-center">
-                            Check-in & Tự Do <span class="free-time-badge">Free Time</span>
-                        </h3>
-                        <p class="text-sm text-gray-600">Nhận phòng nghỉ ngơi. Sau đó <strong>từ 13:30 đến 15:30 là thời gian tự do</strong>. Có thể lượn lờ các con hẻm nhỏ, tìm quán cafe cóc, hoặc ngủ nướng lấy sức.</p>
-                    </div>
-                </div>
+          <div
+            class="bg-white rounded-xl p-6 shadow-sm border-t-4 border-coral"
+          >
+            <h3 class="font-bold text-lg mb-2">Chiều · Đi chơi đến tối</h3>
+            <p class="text-sm text-slate-600">
+              Chơi hết ngày 2 rồi tối mới về: <b>Hồ Đá Xanh</b> (check-in),
+              <b>Hải Đăng Vũng Tàu</b> (view đẹp), dạo <b>Bãi Trước</b> ăn vặt,
+              mua quà rồi xuất phát về SG lúc chiều tối.
+            </p>
+            <span class="price-badge mt-3 inline-block">Tuỳ lịch</span>
+          </div>
+        </div>
 
-                <!-- Item 4 -->
-                <div class="timeline-item flex flex-col md:flex-row items-center justify-between mb-8 w-full">
-                    <div class="order-1 w-full md:w-5/12 px-6 py-4 bg-white rounded-lg shadow-md border-r-4 border-teal-500 mt-4 md:mt-0 md:text-right">
-                        <h3 class="font-bold text-teal-800 text-lg">Cung Biển & Hoàng Hôn</h3>
-                        <p class="text-sm text-gray-600">Chạy một vòng cung biển <strong>Trần Phú – Bãi Dâu</strong>, ghé <strong>Hải đăng Vũng Tàu</strong> (view gió xịn), rồi kết ở <strong>Mũi Nghinh Phong</strong> ngắm hoàng hôn cho đã.</p>
-                    </div>
-                    <div class="z-20 flex items-center order-1 bg-teal-500 shadow-xl w-12 h-12 rounded-full justify-center text-white font-bold text-sm">16:00</div>
-                    <div class="order-1 w-full md:w-5/12"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 4: ITINERARY DAY 2 -->
-        <section id="day2">
-            <h2 class="text-3xl font-bold text-teal-800 mb-6 flex items-center gap-3 border-b-4 border-yellow-400 pb-2 inline-block">
-                <span>☀️</span> Ngày 2: Ngẫu Hứng & Trở Về
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Morning Block with Free Time -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden border-t-4 border-purple-400">
-                    <div class="bg-purple-50 p-4 border-b border-purple-100">
-                        <span class="font-bold text-purple-800">07:00 - 10:00</span>
-                        <span class="free-time-badge float-right">Free Time</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-2 text-gray-800">Sáng Tự Do</h3>
-                        <p class="text-gray-600 text-sm">Ăn sáng nhẹ rồi chọn 1 kèo cho vui: <strong>Bến thuyền Marina</strong> (check-in kiểu “biển Tây”), hoặc <strong>Bạch Dinh</strong> (vibe cổ điển), hoặc quay lại <strong>Hải đăng</strong> nếu hôm qua chưa kịp đi.</p>
-                    </div>
-                </div>
-
-                <!-- Sightseeing Block -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden border-t-4 border-teal-400">
-                    <div class="bg-teal-50 p-4 border-b border-teal-100">
-                        <span class="font-bold text-teal-800">10:00 - 11:30</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-2 text-gray-800">Ngọn Hải Đăng</h3>
-                        <p class="text-gray-600 text-sm">Chạy lên sớm cho mát, vừa ngắm toàn cảnh vừa chụp hình. Đi nhẹ nhàng thôi, đường lên có đoạn dốc.</p>
-                    </div>
-                </div>
-
-                <!-- Lunch Block -->
-                <div class="bg-white rounded-xl shadow-md overflow-hidden border-t-4 border-red-400">
-                    <div class="bg-red-50 p-4 border-b border-red-100">
-                        <span class="font-bold text-red-800">12:00 - 13:30</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-xl mb-2 text-gray-800">Lẩu Cá Đuối</h3>
-                        <p class="text-gray-600 text-sm">Đặc sản “đúng bài”. Tụi mình gọi nồi vừa đủ + thêm rau bún, ăn xong là lăn về Sài Gòn đẹp.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <footer class="text-center text-gray-500 text-sm pb-8">
-            <p>© 2026 Kế Hoạch Vũng Tàu - OS2-DX Team</p>
-        </footer>
-
+        <div class="mt-6 glass-panel rounded-xl p-5 border border-slate-100">
+          <h3 class="font-bold text-slate-800 mb-2">
+            Gợi ý route ngày 2 (dễ đi)
+          </h3>
+          <ul class="text-sm text-slate-700 space-y-2">
+            <li>
+              <b>05:00</b> xuất phát → <b>Mũi Nghinh Phong</b> ngắm bình minh
+              (đi sớm cho đẹp).
+            </li>
+            <li>
+              <b>07:00</b> ăn sáng (gợi ý: <b>bánh khọt</b> / <b>hủ tiếu</b> /
+              <b>bún</b>), rồi cà phê view biển.
+            </li>
+            <li>
+              <b>08:30</b> ghé <b>Hải Đăng Vũng Tàu</b> hoặc chạy vòng
+              <b>Bãi Dứa</b> chụp hình.
+            </li>
+            <li><b>11:30</b> ăn trưa + nghỉ (tuỳ sức).</li>
+            <li>
+              <b>14:00</b> đi <b>Hồ Đá Xanh</b> (nếu hợp mood) hoặc chill cafe.
+            </li>
+            <li><b>16:30 - 18:30</b> dạo <b>Bãi Trước</b> ăn vặt, mua quà.</li>
+            <li><b>18:30+</b> xuất phát về SG (đi tối mát hơn).</li>
+          </ul>
+          <p class="text-xs text-slate-500 mt-3">
+            *Tuỳ thời tiết & sức khoẻ, mình có thể tinh chỉnh lại giờ/điểm cho
+            hợp team.
+          </p>
+        </div>
+      </section>
     </main>
 
-    <!-- AI ASSISTANT UI -->
-    <button id="aiToggleBtn" class="ai-widget-btn bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white rounded-full p-4 shadow-xl flex items-center gap-2 group">
-        <span class="text-2xl">✨</span>
-        <span class="font-bold hidden group-hover:block transition-all duration-300">Hỏi Thổ Địa</span>
+    <button
+      id="aiToggleBtn"
+      class="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-tr from-sea to-teal-500 rounded-full shadow-2xl flex items-center justify-center text-2xl text-white z-50 hover:scale-110 transition-transform animate-float"
+    >
+      ✨
     </button>
 
-    <div id="aiChatWindow" class="ai-chat-window hidden-chat bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col">
-        <!-- Chat Header -->
-        <div class="bg-gradient-to-r from-teal-600 to-emerald-600 p-4 flex justify-between items-center text-white">
-            <div class="flex items-center gap-2">
-                <span class="text-xl">🤖</span>
-                <div>
-                    <h3 class="font-bold">Thổ Địa Vũng Tàu</h3>
-                    <p class="text-xs text-teal-100 opacity-80">OS2-DX Trip Buddy</p>
-                </div>
-            </div>
-            <button id="closeChatBtn" class="hover:bg-white/20 rounded-full p-1 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+    <div
+      id="aiChatWindow"
+      class="fixed bottom-24 right-6 w-[90%] md:w-[400px] h-[500px] bg-white rounded-2xl shadow-2xl z-40 hidden flex-col border border-slate-100 transform transition-all origin-bottom-right"
+    >
+      <div class="bg-sea p-4 rounded-t-2xl flex justify-between items-center">
+        <h3 class="font-bold text-white">Gợi ý lịch trình</h3>
+        <button
+          id="closeChatBtn"
+          class="text-white hover:bg-white/20 rounded-full p-1"
+        >
+          ✕
+        </button>
+      </div>
+      <div
+        id="chatHistory"
+        class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50"
+      >
+        <div
+          class="bg-white p-3 rounded-lg shadow-sm text-sm border-l-4 border-sun"
+        >
+          Chào bạn! 👋 Lịch trình đã được cập nhật thêm các địa điểm hot hit:
+          <b>Mũi Nghinh Phong (bình minh), Hẻm 444 Trần Phú (check-in)</b> và
+          lịch đi chơi ngày 2 đến <b>chiều/tối</b> mới về. <br /><br />
+          Lưu ý: <b>Tiệm Vỏ Sò</b> giờ chỉ ghé tham quan 15 phút (mua là
+          optional). Còn Karaoke thì budget vẫn hơi "căng" xíu nha — cân đối gọi
+          món vừa phải hoặc share thêm nếu lổ to nhé! 🎤
         </div>
-
-        <!-- Chat History -->
-        <div id="chatHistory" class="flex-1 overflow-y-auto p-4 bg-gray-50">
-            <div class="chat-message ai">
-                <p>Ê OS2-DX ơi! Tụi mình chốt <strong>500K/người</strong> cho chuyến 2N1Đ. Muốn kèo check-in “đặc biệt”, chỗ chơi vui, quán ăn ổn áp… cứ hỏi mình, mình gợi ý trong đúng khung ngân sách luôn.</p>
-            </div>
+      </div>
+      <div class="p-3 bg-white border-t">
+        <div class="flex gap-2 overflow-x-auto pb-2 mb-2 scrollbar-hide">
+          <button
+            onclick="sendPrompt('Gợi ý lịch ngày 2 đi đâu để chiều tối mới về?')"
+            class="whitespace-nowrap px-3 py-1 bg-slate-100 rounded-full text-xs text-slate-600 hover:bg-sea hover:text-white transition"
+          >
+            🗓️ Route ngày 2
+          </button>
+          <button
+            onclick="sendPrompt('Bình minh Mũi Nghinh Phong nên đi giờ nào và đứng chỗ nào đẹp?')"
+            class="whitespace-nowrap px-3 py-1 bg-slate-100 rounded-full text-xs text-slate-600 hover:bg-sea hover:text-white transition"
+          >
+            🌅 Nghinh Phong
+          </button>
+          <button
+            onclick="sendPrompt('Hẻm 444 Trần Phú chụp góc nào đẹp và canh giờ hoàng hôn sao cho chuẩn?')"
+            class="whitespace-nowrap px-3 py-1 bg-slate-100 rounded-full text-xs text-slate-600 hover:bg-sea hover:text-white transition"
+          >
+            📷 Hẻm 444
+          </button>
         </div>
-
-        <!-- Quick Prompts -->
-        <div class="px-4 py-2 bg-gray-50 border-t border-gray-200 overflow-x-auto whitespace-nowrap scrollbar-hide">
-            <button onclick="sendQuickPrompt('Gợi ý ăn sáng ngon - gọn ở Vũng Tàu')" class="inline-block px-3 py-1 bg-white border border-teal-200 text-teal-600 rounded-full text-xs hover:bg-teal-50 mr-2">🥪 Ăn sáng ngon</button>
-            <button onclick="sendQuickPrompt('Gợi ý chỗ chơi vui, check-in đặc biệt ở Vũng Tàu')" class="inline-block px-3 py-1 bg-white border border-teal-200 text-teal-600 rounded-full text-xs hover:bg-teal-50 mr-2">📸 Chỗ chơi đặc biệt</button>
-            <button onclick="sendQuickPrompt('Gợi ý quán hải sản ổn áp cho nhóm 4 người')" class="inline-block px-3 py-1 bg-white border border-teal-200 text-teal-600 rounded-full text-xs hover:bg-teal-50">🦀 Hải sản</button>
+        <div class="flex gap-2">
+          <input
+            type="text"
+            id="userQueryInput"
+            placeholder="Hỏi thêm gì đó..."
+            class="flex-1 px-4 py-2 bg-slate-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-sea"
+          />
+          <button
+            id="sendBtn"
+            class="w-10 h-10 bg-sea rounded-full flex items-center justify-center text-white shadow-sm hover:bg-teal-600"
+          >
+            ➤
+          </button>
         </div>
-
-        <!-- Input Area -->
-        <div class="p-4 bg-white border-t border-gray-200">
-            <div class="flex items-center gap-2">
-                <input type="text" id="userQueryInput" placeholder="Nhập câu hỏi..." class="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500">
-                <button id="sendBtn" class="bg-teal-600 text-white rounded-full p-2 hover:bg-teal-700 transition-colors disabled:opacity-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                    </svg>
-                </button>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <!-- SCRIPT SECTION -->
     <script>
-        // --- 1. Label Wrapping Helper Function (16 char limit) ---
-        function wrapLabel(str, maxLen = 16) {
-            if (str.length <= maxLen) return str;
-            
-            const words = str.split(' ');
-            const lines = [];
-            let currentLine = words[0];
-
-            for (let i = 1; i < words.length; i++) {
-                if ((currentLine + " " + words[i]).length <= maxLen) {
-                    currentLine += " " + words[i];
-                } else {
-                    lines.push(currentLine);
-                    currentLine = words[i];
-                }
-            }
-            lines.push(currentLine);
-            return lines;
-        }
-
-        // --- 2. Chart.js Global Config for Tooltips ---
-        const tooltipConfig = {
-            callbacks: {
-                title: function(tooltipItems) {
-                    const item = tooltipItems[0];
-                    let label = item.chart.data.labels[item.dataIndex];
-                    if (Array.isArray(label)) {
-                        return label.join(' ');
-                    } else {
-                        return label;
-                    }
-                }
-            }
-        };
-
-        // --- 3. Budget Donut Chart (UPDATED) ---
-        const donutCtx = document.getElementById('budgetDonutChart').getContext('2d');
-        const budgetLabels = ["Ăn uống", "Chỗ ở", "Di chuyển", "Vui chơi"];
-        const wrappedBudgetLabels = budgetLabels.map(l => wrapLabel(l));
-
-        // Total: 2.0M (500k/person x 4 people). No contingency line item.
-        new Chart(donutCtx, {
-            type: 'doughnut',
-            data: {
-                labels: wrappedBudgetLabels,
-                datasets: [{
-                    data: [1000000, 450000, 350000, 200000],
-                    backgroundColor: [
-                        '#EF4444', // Red - Eating
-                        '#F59E0B', // Orange - Hotel
-                        '#3B82F6', // Blue - Travel
-                        '#8B5CF6'  // Purple - Fun
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#ffffff'
-                }]
+      // --- 1. Charts (Cập nhật dữ liệu cho phù hợp với hoạt động mới) ---
+      // Tổng: 2.000.000đ (4 người)
+      // Ăn uống: 850k (ăn trưa/tối + ăn vặt; Tiệm Vỏ Sò chỉ tham quan, mua là optional)
+      // Karaoke/Vui chơi: 500k
+      // Ở: 400k (Khách sạn bình dân)
+      // Di chuyển/Khác: 250k
+      const ctx = document.getElementById("budgetChart").getContext("2d");
+      new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: ["Ăn uống", "Karaoke/Nhậu", "Khách sạn", "Di chuyển"],
+          datasets: [
+            {
+              data: [850000, 500000, 400000, 250000],
+              backgroundColor: ["#F43F5E", "#8B5CF6", "#F59E0B", "#0EA5E9"],
+              borderWidth: 0,
+              hoverOffset: 10,
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            font: { size: 12 }
-                        }
-                    },
-                    tooltip: tooltipConfig,
-                    title: {
-                        display: true,
-                        text: 'Ngân Sách: 2.0 Triệu (500K/người)',
-                        font: { size: 16 }
-                    }
-                }
-            }
-        });
-
-        // --- 4. Budget Bar Chart (UPDATED) ---
-        const barCtx = document.getElementById('budgetBarChart').getContext('2d');
-        
-        new Chart(barCtx, {
-            type: 'bar',
-            data: {
-                labels: wrappedBudgetLabels,
-                datasets: [{
-                    label: 'Chi phí (VNĐ)',
-                    data: [1000000, 450000, 350000, 200000],
-                    backgroundColor: '#0d9488', // Teal
-                    borderRadius: 6,
-                }]
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "right",
+              labels: { font: { family: "Quicksand", size: 11 } },
             },
-            options: {
-                indexAxis: 'y', // Horizontal bar for better label reading
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        grid: { display: false }
-                    },
-                    y: {
-                        grid: { display: false }
-                    }
-                },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: tooltipConfig,
-                    title: {
-                        display: true,
-                        text: 'Chi Tiết Hạng Mục (Chốt 500K/người)',
-                        font: { size: 16 }
-                    }
-                }
-            }
-        });
+          },
+        },
+      });
 
-        // --- 5. AI Assistant Logic ---
-        const aiToggleBtn = document.getElementById('aiToggleBtn');
-        const aiChatWindow = document.getElementById('aiChatWindow');
-        const closeChatBtn = document.getElementById('closeChatBtn');
-        const chatHistory = document.getElementById('chatHistory');
-        const userQueryInput = document.getElementById('userQueryInput');
-        const sendBtn = document.getElementById('sendBtn');
+      // --- 2. AI Chat Logic (Mockup Minimal) ---
+      const chatWindow = document.getElementById("aiChatWindow");
+      const history = document.getElementById("chatHistory");
+      const input = document.getElementById("userQueryInput");
 
-        // Toggle Chat Window
-        function toggleChat() {
-            aiChatWindow.classList.toggle('hidden-chat');
-        }
+      document.getElementById("aiToggleBtn").onclick = () => {
+        chatWindow.classList.toggle("hidden");
+        chatWindow.classList.toggle("flex");
+      };
+      document.getElementById("closeChatBtn").onclick = () => {
+        chatWindow.classList.add("hidden");
+        chatWindow.classList.remove("flex");
+      };
 
-        aiToggleBtn.addEventListener('click', toggleChat);
-        closeChatBtn.addEventListener('click', toggleChat);
+      async function sendPrompt(text) {
+        if (!text) text = input.value;
+        if (!text) return;
 
-        // Gemini API Configuration
-        const apiKey = ""; // API Key provided by environment
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+        // Add User Msg
+        const userDiv = document.createElement("div");
+        userDiv.className =
+          "bg-sea text-white p-3 rounded-lg shadow-sm text-sm self-end ml-auto max-w-[80%]";
+        userDiv.innerText = text;
+        history.appendChild(userDiv);
+        input.value = "";
+        history.scrollTop = history.scrollHeight;
 
-        const systemPrompt = `
-            Bạn là một hướng dẫn viên du lịch địa phương tại Vũng Tàu (Thổ địa Vũng Tàu), nói chuyện thân thiện như bạn bè.
-            
-            NGỮ CẢNH CỦA NHÓM OS2-DX:
-            - Thành viên: nguyn_don_wut, Én (bé Na), duyhung, hữu khen...
-            - Thời gian: 2 ngày 1 đêm (02/01/2026 - 03/01/2026).
-            - Phương tiện: Xe máy.
-            - **NGÂN SÁCH: 500.000 VNĐ/người** (ngân sách có bao nhiêu thì chơi bấy nhiêu, không cần mục “dự phòng”).
-            - Có các khung giờ "Free Time" để đi tự do.
+        // Mock AI Response (Call API here in real app)
+        const aiDiv = document.createElement("div");
+        aiDiv.className =
+          "bg-white p-3 rounded-lg shadow-sm text-sm border-l-4 border-sun mr-auto max-w-[80%] mt-2";
+        aiDiv.innerHTML =
+          "Đang suy nghĩ... <span class='animate-pulse'>...</span>";
+        history.appendChild(aiDiv);
+        history.scrollTop = history.scrollHeight;
 
-            NHIỆM VỤ CỦA BẠN:
-            - Gợi ý chỗ chơi/check-in “đặc biệt”, vui, hợp nhóm 4 người.
-            - Gợi ý quán ăn ngon và hợp túi tiền (ưu tiên quán địa phương, dễ đi xe máy).
-            - Nếu gợi ý có phí/vé, hãy nói rõ mức phí ước tính và đưa phương án thay thế miễn phí.
-            - Không cần khoe “dư ngân sách” hay so sánh hơn kém, chỉ tư vấn cách chia tiền cho hợp lý trong ngân sách.
-            - Luôn xưng hô kiểu "tụi mình/anh em" và nhắc tên nhóm OS2-DX.
-            - Định dạng câu trả lời bằng Markdown.
-        `;
+        // Gemini Simulation
+        setTimeout(() => {
+          let reply = "";
+          if (
+            text.includes("Route ngày 2") ||
+            text.includes("ngày 2") ||
+            text.includes("chiều tối")
+          )
+            reply =
+              "Gợi ý route ngày 2 (đi chơi đến chiều/tối mới về):\n\n- **05:00** xuất phát → **Mũi Nghinh Phong** ngắm bình minh (gió mạnh, mặc ấm).\n- **07:00** ăn sáng: bánh khọt / hủ tiếu.\n- **08:30** **Hải Đăng Vũng Tàu** (đi sớm đỡ nắng) hoặc chạy vòng **Bãi Dứa** chụp hình.\n- **11:30** ăn trưa + nghỉ ngắn.\n- **14:00** đi **Hồ Đá Xanh** (check-in) hoặc cafe chill.\n- **16:30 - 18:30** dạo **Bãi Trước** ăn vặt, mua quà.\n- **18:30+** xuất phát về SG (tối mát dễ chạy).";
+          else if (text.toLowerCase().includes("nghinh phong"))
+            reply =
+              "Bình minh ở **Mũi Nghinh Phong** đẹp nhất nếu bạn đến trước lúc mặt trời lên khoảng **15–25 phút**.\n\n- **Giờ đi:** thường **05:00 xuất phát**, tới nơi tầm **05:20–05:40** (tuỳ chỗ ở).\n- **Đứng chụp đẹp:** khu **mỏm đá hướng ra biển** và đoạn **cổng trời** (đi cẩn thận vì đá có thể trơn).\n- **Tips:** mang áo khoác mỏng/áo gió, giữ điện thoại chắc tay vì gió mạnh; nếu muốn ảnh trong hơn thì tránh đứng quá gần bọt sóng.";
+          else if (text.toLowerCase().includes("hẻm 444"))
+            reply =
+              "Check-in **Hẻm 444 Trần Phú**: ngon nhất là canh **trước hoàng hôn 20–40 phút** để có ánh sáng vàng và trời chưa tối.\n\n- **Góc dễ ăn ảnh:** đứng ở đoạn **dốc nhìn ra biển**, chụp thấp để lấy đường cong con dốc + nền biển; hoặc chụp ngang lấy **đồi + biển**.\n- **Canh giờ:** tới tầm **18:20–19:20** (tuỳ mùa), chụp nhanh 2-3 set rồi đi lượn cung đường biển đón hoàng hôn.\n- **Lưu ý:** hẻm nhỏ, nhớ nhường đường/đậu xe gọn để không ảnh hưởng người dân.";
+          else if (text.includes("iCool"))
+            reply =
+              "Karaoke Vũng Tàu giá giờ hát buổi tối cuối tuần khoảng 250k-300k/giờ chưa tính nước. Nhóm mình 4 người đi 2 tiếng là vừa đẹp ngân sách 'vui chơi' nè.";
+          else
+            reply =
+              "Bạn hỏi thêm địa điểm/giờ giấc cụ thể (ví dụ: **ngày 2 đi đâu**, **Nghinh Phong**, **Hẻm 444**) là mình gợi ý chi tiết liền nha.";
 
-        async function callGemini(userText) {
-            appendMessage('user', userText);
-            const typingId = appendTypingIndicator();
+          aiDiv.innerHTML = marked.parse(reply);
+          history.scrollTop = history.scrollHeight;
+        }, 1000);
+      }
 
-            try {
-                const payload = {
-                    contents: [{
-                        parts: [{
-                            text: systemPrompt + "\n\nUser Question: " + userText
-                        }]
-                    }]
-                };
-
-                let retries = 0;
-                const maxRetries = 3;
-                let result = null;
-
-                while (retries < maxRetries) {
-                    try {
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-
-                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                        result = await response.json();
-                        break; 
-                    } catch (e) {
-                        retries++;
-                        if (retries === maxRetries) throw e;
-                        await new Promise(r => setTimeout(r, 1000 * Math.pow(2, retries))); 
-                    }
-                }
-
-                removeMessage(typingId);
-                const aiText = result.candidates?.[0]?.content?.parts?.[0]?.text || "Xin lỗi, mạng hơi lag. Hỏi lại giúp mình nha!";
-                appendMessage('ai', aiText);
-
-            } catch (error) {
-                removeMessage(typingId);
-                console.error("Gemini API Error:", error);
-                appendMessage('ai', "Oops! Có lỗi xảy ra. Thử lại sau nhé.");
-            }
-        }
-
-        // UI Helper Functions for Chat
-        function appendMessage(role, text) {
-            const div = document.createElement('div');
-            div.className = `chat-message ${role}`;
-            if (role === 'ai') {
-                div.innerHTML = marked.parse(text);
-            } else {
-                div.textContent = text;
-            }
-            chatHistory.appendChild(div);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-            return div.id; 
-        }
-
-        function appendTypingIndicator() {
-            const id = 'typing-' + Date.now();
-            const div = document.createElement('div');
-            div.id = id;
-            div.className = 'chat-message ai typing-indicator';
-            div.innerHTML = '<span></span><span></span><span></span>';
-            chatHistory.appendChild(div);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-            return id;
-        }
-
-        function removeMessage(id) {
-            const el = document.getElementById(id);
-            if (el) el.remove();
-        }
-
-        function sendQuickPrompt(text) {
-            callGemini(text);
-        }
-
-        // Event Listeners for Input
-        sendBtn.addEventListener('click', () => {
-            const text = userQueryInput.value.trim();
-            if (text) {
-                callGemini(text);
-                userQueryInput.value = '';
-            }
-        });
-
-        userQueryInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const text = userQueryInput.value.trim();
-                if (text) {
-                    callGemini(text);
-                    userQueryInput.value = '';
-                }
-            }
-        });
+      document.getElementById("sendBtn").onclick = () => sendPrompt();
+      input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") sendPrompt();
+      });
     </script>
-</body>
+  </body>
 </html>
